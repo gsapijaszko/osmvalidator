@@ -14,7 +14,7 @@ find_unconnected_ways(highways = NULL, exclude = NULL, return_all_columns = FALS
 \item{return_all_columns}{if all columns from input data set has to be returned, default FALSE. In this case only osm_id, highway, name, and geometry are returned.}
 }
 \value{
-set of unconected highways, otherwise NULL
+set of unconnected highways, otherwise NULL
 }
 \description{
 find_unconnected_ways() Searches for unconnected solitary ways

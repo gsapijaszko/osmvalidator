@@ -3,6 +3,7 @@
 export(find_crossing_ways)
 export(find_unconnected_ways)
 importFrom(dplyr,mutate)
+importFrom(dplyr,row_number)
 importFrom(dplyr,rowwise)
 importFrom(sf,st_cast)
 importFrom(sf,st_crosses)

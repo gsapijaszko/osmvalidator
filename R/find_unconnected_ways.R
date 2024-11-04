@@ -2,12 +2,13 @@
 #'
 #' @importFrom sf st_dimension st_intersects
 #' @importFrom tidyr pivot_longer
+#' @importFrom dplyr mutate row_number
 #'
 #' @param highways simple feature collection (class sf) with highways as LINESTRING
 #' @param exclude list of types of highways to exclude, ex. c("proposed", "rest_area", "steps"), default NULL
 #' @param return_all_columns if all columns from input data set has to be returned, default FALSE. In this case only osm_id, highway, name, and geometry are returned.
 #'
-#' @returns set of unconected highways, otherwise NULL
+#' @returns set of unconnected highways, otherwise NULL
 #'
 #' @usage find_unconnected_ways(highways = NULL, exclude = NULL, return_all_columns = FALSE)
 #'
@@ -43,7 +44,7 @@ find_unconnected_ways <- function(highways = NULL, exclude = NULL, return_all_co
 
   if("highway" %in% colnames(highways)) {
     highways <- highways |>
-      subset(!is.na("highway"))
+      subset(!is.na("highway") & highway != "no")
   }
 
   if(!is.null(exclude)) {
@@ -68,7 +69,8 @@ find_unconnected_ways <- function(highways = NULL, exclude = NULL, return_all_co
     unique()
 
   highways <- highways |>
-    subset(!rownames(highways) %in% i$value)
+    dplyr::mutate(rn = dplyr::row_number()) |>
+    subset(!rn %in% i$value)
 
   if(nrow(highways) == 0L) {
     message("No disconnected highways found.")
